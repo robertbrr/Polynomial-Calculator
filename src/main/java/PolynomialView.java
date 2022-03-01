@@ -15,7 +15,7 @@ public class PolynomialView extends JFrame {
     private JButton subtractB = new JButton("SUBTRACT");
     private JButton multiplyB = new JButton("MULTIPLY");
     private JButton divideB = new JButton("DIVIDE");
-    private JButton derivativeB = new JButton("DERIVATIVE");
+    private JButton deriveB = new JButton("DERIVE");
     private JButton integrateB = new JButton("INTEGRATE");
 
     private ArrayList<JButton> digitB = new ArrayList<>();//buttons with numbers 0-9
@@ -24,13 +24,13 @@ public class PolynomialView extends JFrame {
     private JButton plusB = new JButton("+");
     private JButton minusB = new JButton("-");
     private JButton deleteB = new JButton("del");
+    private JButton clearB = new JButton("clear");
 
     private LiveInputVerifier firstOpChecker;
     private LiveInputVerifier secondOpChecker;
 
-    PolynomialView(PolynomialModel pCalcModel)
-    {
-        this.setSize(415,615);
+    PolynomialView(PolynomialModel pCalcModel){
+        this.setSize(415,655);
         this.setResizable(false);
         this.pCalcModel=pCalcModel;
 
@@ -56,6 +56,12 @@ public class PolynomialView extends JFrame {
         this.variableB.setFocusable(false);
         this.powerB.setFocusable(false);
         this.deleteB.setFocusable(false);
+        this.clearB.setFocusable(false);
+        this.addB.setFocusable(false);
+        this.multiplyB.setFocusable(false);
+        this.subtractB.setFocusable(false);
+        this.integrateB.setFocusable(false);
+        this.deriveB.setFocusable(false);
 
         //make fields non-editable from the regular keyboard
         firstOpField.setEditable(false);
@@ -82,7 +88,7 @@ public class PolynomialView extends JFrame {
         operationPanel.setLayout(new GridLayout(2,3,4,4));
         operationPanel.add(addB);
         operationPanel.add(multiplyB);
-        operationPanel.add(derivativeB);
+        operationPanel.add(deriveB);
         operationPanel.add(subtractB);
         operationPanel.add(divideB);
         operationPanel.add(integrateB);
@@ -91,7 +97,7 @@ public class PolynomialView extends JFrame {
         //panel containing input buttons for the user
         JPanel keyboardPanel = new JPanel();
         keyboardPanel.setSize(300,500);
-        keyboardPanel.setLayout(new GridLayout(5,3,4,4));
+        keyboardPanel.setLayout(new GridLayout(6,3,4,4));
         digitB.get(0).setPreferredSize(new Dimension(100,50));
         for (JButton e:this.digitB)
             keyboardPanel.add(e);
@@ -100,7 +106,9 @@ public class PolynomialView extends JFrame {
         keyboardPanel.add(plusB);
         keyboardPanel.add(minusB);
         keyboardPanel.add(deleteB);
+        keyboardPanel.add(clearB);
         contentPanel.add(keyboardPanel);
+
 
         this.setContentPane(contentPanel);
         this.setTitle("Polynomial Calc");
@@ -125,12 +133,40 @@ public class PolynomialView extends JFrame {
         this.powerB.addActionListener(actionListener);
     }
 
+    public void addPerformOperationActionListener(ActionListener actionListener){
+        this.addB.addActionListener(actionListener);
+        this.subtractB.addActionListener(actionListener);
+        this.multiplyB.addActionListener(actionListener);
+        this.divideB.addActionListener(actionListener);
+    }
+
+    public void addPerformOperationForSingleOperandActionListener(ActionListener actionListener){
+        this.integrateB.addActionListener(actionListener);
+        this.deriveB.addActionListener(actionListener);
+    }
+
     public void addDeleteCharActionListener(ActionListener actionListener){
         this.deleteB.addActionListener(actionListener);
+    }
+    public void addClearFieldActionListener(ActionListener actionListener){
+        this.clearB.addActionListener(actionListener);
     }
 
     public void addHighlightTextFieldFocusListener(FocusListener focusListener){
         this.firstOpField.addFocusListener(focusListener);
         this.secondOpField.addFocusListener(focusListener);
+    }
+
+    public String getFirstOp() {
+        return firstOpField.getText();
+    }
+    public String getSecondOp() {
+        return secondOpField.getText();
+    }
+    public void setResult() {
+        this.resultField.setText(pCalcModel.getResult());
+    }
+    public void setErrorResult(){
+        this.resultField.setText("Err");
     }
 }

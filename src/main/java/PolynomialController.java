@@ -17,6 +17,9 @@ public class PolynomialController {
         pCalcView.addSelfValueInserterActionListener(new SelfValueInserter());
         pCalcView.addDeleteCharActionListener(new DeleteChar());
         pCalcView.addHighlightTextFieldFocusListener(new HighlightTextField());
+        pCalcView.addPerformOperationActionListener(new PerformOperation());
+        pCalcView.addPerformOperationForSingleOperandActionListener(new PerformOperationForSingleOperand());
+        pCalcView.addClearFieldActionListener(new ClearField());
     }
 
     class SelfValueInserter implements ActionListener {
@@ -27,6 +30,28 @@ public class PolynomialController {
                 pCalcView.getFocusedTextFieldChecker().inputCheckerAndAdder(sourceButton.getText().charAt(0));
             } catch (NullPointerException exception){
                 JOptionPane.showMessageDialog(sourceButton,"Please select a text field");
+            }
+        }
+    }
+    class PerformOperation implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton sourceButton = (JButton)e.getSource();
+            try
+            {
+                pCalcModel.resetResult();
+                pCalcModel.setFirstOperand(new Polynomial(pCalcView.getFirstOp()));
+                pCalcModel.setSecondOperand(new Polynomial(pCalcView.getSecondOp()));
+                switch(sourceButton.getText()){
+                    case "ADD": pCalcModel.addPolynomial();break;
+                    case "SUBTRACT":pCalcModel.subtractPolynomial(); break;
+                    case "MULTIPLY":pCalcModel.multiplyPolynomial();break;
+                    case "DIVIDE" : pCalcModel.dividePolynomial();break;
+                }
+                pCalcView.setResult();
+            }catch (IncorrectInputException excp) {
+                JOptionPane.showMessageDialog(sourceButton, excp.getMessage());
+                pCalcView.setErrorResult();
             }
         }
     }
@@ -42,7 +67,37 @@ public class PolynomialController {
             }
         }
     }
-
+    class ClearField implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton bttn = (JButton)e.getSource();
+            try{
+                pCalcView.getFocusedTextFieldChecker().clear();
+            }catch (NullPointerException excp)
+            {
+                JOptionPane.showMessageDialog(bttn,"Please select a field!");
+            }
+        }
+    }
+    class PerformOperationForSingleOperand implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JButton sourceButton = (JButton)e.getSource();
+            try
+            {
+                pCalcModel.resetResult();
+                pCalcModel.setFirstOperand(new Polynomial(pCalcView.getFirstOp()));
+                switch(sourceButton.getText()){
+                    case "DERIVE": pCalcModel.derivePolynomial();break;
+                    case "INTEGRATE": pCalcModel.integratePolynomial();break;
+                }
+                pCalcView.setResult();
+            }catch (IncorrectInputException excp){
+                JOptionPane.showMessageDialog(sourceButton,excp.getMessage());
+                pCalcView.setErrorResult();
+            }
+        }
+    }
     class HighlightTextField implements FocusListener {
         @Override
         public void focusGained(FocusEvent e) {
@@ -55,4 +110,5 @@ public class PolynomialController {
             textField.setBorder(new JTextField().getBorder());
         }
     }
+
 }
