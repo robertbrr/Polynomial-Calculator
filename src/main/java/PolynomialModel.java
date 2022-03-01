@@ -1,35 +1,42 @@
-public class PolynomialModel {
-    private Polynomial currentResult;
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collections;
 
-    public void addPolynomials(Polynomial toAdd) {
-        Polynomial tempResult = new Polynomial();
-        Polynomial biggerGrade = toAdd;
-        Polynomial lowerGrade = currentResult;
-        if (currentResult.getDeg() > toAdd.getDeg()) {
-            biggerGrade = currentResult;
-            lowerGrade = toAdd;
-        }
-        int prevDeg= biggerGrade.getDeg();
-        boolean added;
-        for (Monomial y : biggerGrade.getComponents()) {
-            added=false;
-            for (Monomial z : lowerGrade.getComponents()) {
-                if (z.getDeg() == y.getDeg()) {
-                    tempResult.getComponents().add(new Monomial(z.getDeg(), z.getCoeff() + y.getCoeff())); added=true;
-                    break;
-                } else if (z.getDeg() < y.getDeg()) {
-                    tempResult.getComponents().add(new Monomial(y.getDeg(), y.getCoeff()));added=true;
-                }
-                else
-                    if(z.getDeg()<prevDeg)
-                        tempResult.getComponents().add(new Monomial(z.getDeg(), z.getCoeff()));added=true;
-                }
-            if(added==false)
-                tempResult.getComponents().add(y);
+public class PolynomialModel {
+    //to do make these private
+    public Polynomial firstOperand;
+    public Polynomial secondOperand;
+    public Polynomial finalResult=new Polynomial();
+
+    public void addOrSubtractPolynomials(char typeOfOp) {
+        finalResult.getComponents().addAll(firstOperand.getComponents());
+        finalResult.getComponents().addAll(secondOperand.getComponents());
+        Collections.sort(finalResult.getComponents());
+        Monomial previous=new Monomial(-1,0);
+        ArrayList<Monomial> toBeRemoved = new ArrayList<>();
+        for(Monomial z: finalResult.getComponents())
+        {
+            if(z.getDeg()==previous.getDeg())
+            {   if(typeOfOp == '+')
+                    previous.setCoeff(previous.getCoeff() + z.getCoeff());
+                else if (typeOfOp == '-')
+                    previous.setCoeff(previous.getCoeff() - z.getCoeff());
+                toBeRemoved.add(z);
             }
-        currentResult=tempResult;
+            else
+                previous=z;
+        }
+        for (Monomial z:toBeRemoved) {
+            finalResult.getComponents().remove(z);
         }
     }
+    public void addPolynomials(){addOrSubtractPolynomials('+');}
+    public void subtractPolynomials(){addOrSubtractPolynomials('-');}
+
+}
+
+
+
 
 
 
