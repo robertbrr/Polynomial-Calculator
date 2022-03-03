@@ -70,7 +70,7 @@ public class PolynomialView extends JFrame {
 
         firstOpField.setPreferredSize(new Dimension(100,30));
         secondOpField.setPreferredSize(new Dimension(100,30));
-        resultField.setPreferredSize(new Dimension(100,30));
+        resultField.setPreferredSize(new Dimension(100,100));
 
         //the main panel
         JPanel contentPanel = new JPanel();
@@ -164,7 +164,10 @@ public class PolynomialView extends JFrame {
         return secondOpField.getText();
     }
     public void setResult() {
-        this.resultField.setText(pCalcModel.getResult());
+        if(pCalcModel.getRem().printPolynomial().equals("0"))
+            this.resultField.setText(pCalcModel.getResult().printPolynomial());
+        else
+            this.resultField.setText(pCalcModel.getResult().printPolynomial()+"  Rem: "+ pCalcModel.getRem().printPolynomial());
     }
     public void setErrorResult(){
         this.resultField.setText("Err");

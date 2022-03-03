@@ -25,6 +25,7 @@ public class Polynomial {
             else
                 this.components.add(new Monomial(polyMatcher.group(1)));
         }
+        this.cleanUp();
         Collections.sort(this.getComponents());
         this.removeDuplicateMonomials();
     }
@@ -33,7 +34,11 @@ public class Polynomial {
         return components;
     }
     public int getDeg() {
-        return this.components.get(0).getDeg();
+        for (Monomial e: components ) {
+            if(e.getCoeff()!=0)
+                return e.getDeg();
+        }
+        return -1;
     }
     public void removeDuplicateMonomials() {
         Monomial previous = new Monomial(-1, 0);
@@ -55,6 +60,12 @@ public class Polynomial {
             r.getComponents().add(new Monomial(e.getDeg(), -e.getCoeff()));
         }
         return r;
+    }
+    public void cleanUp(){
+        for (Monomial e: components) {
+            if(e.getCoeff() == 0)
+                components.remove(e);
+        }
     }
     public String printPolynomial() {
         String toPrint = new String();

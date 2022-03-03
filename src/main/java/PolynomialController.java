@@ -40,13 +40,11 @@ public class PolynomialController {
             try
             {
                 pCalcModel.resetResult();
-                pCalcModel.setFirstOperand(new Polynomial(pCalcView.getFirstOp()));
-                pCalcModel.setSecondOperand(new Polynomial(pCalcView.getSecondOp()));
                 switch(sourceButton.getText()){
-                    case "ADD": pCalcModel.addPolynomial();break;
-                    case "SUBTRACT":pCalcModel.subtractPolynomial(); break;
-                    case "MULTIPLY":pCalcModel.multiplyPolynomial();break;
-                    case "DIVIDE" : pCalcModel.dividePolynomial();break;
+                    case "ADD": pCalcModel.setResult(pCalcModel.addPolynomial(new Polynomial(pCalcView.getFirstOp()),new Polynomial(pCalcView.getSecondOp())));break;
+                    case "SUBTRACT":pCalcModel.setResult(pCalcModel.subtractPolynomial(new Polynomial(pCalcView.getFirstOp()),new Polynomial(pCalcView.getSecondOp())));break;
+                    case "MULTIPLY":pCalcModel.setResult(pCalcModel.multiplyPolynomial(new Polynomial(pCalcView.getFirstOp()),new Polynomial(pCalcView.getSecondOp())));break;
+                    case "DIVIDE" :pCalcModel.setResult(pCalcModel.dividePolynomial(new Polynomial(pCalcView.getFirstOp()),new Polynomial(pCalcView.getSecondOp())));break;
                 }
                 pCalcView.setResult();
             }catch (IncorrectInputException excp) {
@@ -86,10 +84,9 @@ public class PolynomialController {
             try
             {
                 pCalcModel.resetResult();
-                pCalcModel.setFirstOperand(new Polynomial(pCalcView.getFirstOp()));
                 switch(sourceButton.getText()){
-                    case "DERIVE": pCalcModel.derivePolynomial();break;
-                    case "INTEGRATE": pCalcModel.integratePolynomial();break;
+                    case "DERIVE": pCalcModel.setResult(pCalcModel.derivePolynomial(new Polynomial(pCalcView.getFirstOp())));break;
+                    case "INTEGRATE": pCalcModel.setResult(pCalcModel.integratePolynomial(new Polynomial(pCalcView.getFirstOp())));break;
                 }
                 pCalcView.setResult();
             }catch (IncorrectInputException excp){
