@@ -44,8 +44,8 @@ public class PolynomialMultiplicationTest {
         Polynomial firstOp = null;
         Polynomial secondOp = null;
         try {
-            firstOp = new Polynomial("-3");
-            secondOp = new Polynomial("X^2-2X+3");
+            firstOp = new Polynomial("X^2-2X+3");
+            secondOp = new Polynomial("-3");
         } catch (IncorrectInputException e) {
             e.printStackTrace();
         }
@@ -71,6 +71,6 @@ public class PolynomialMultiplicationTest {
         } catch (IncorrectInputException e) {
             e.printStackTrace();
         }
-        assertEquals("2X^5-4X^4+7X^3-X^2+X+3",pCalcModel.multiplyPolynomial(secondOp,firstOp).printPolynomial());
+        assertEquals("2X^5-4X^4+7X^3-X^2+X+3",pCalcModel.multiplyPolynomial(firstOp,secondOp).printPolynomial());
     }
 }

@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         PolynomialAdditionTest.class, PolynomialSubtractionTest.class,
         PolynomialMultiplicationTest.class,PolynomialDivisionTest.class,
-        PolynomialDerivativeTest.class,PolynomialIntegrationTest.class
+        PolynomialDerivativeTest.class,PolynomialIntegrationTest.class,
+        PolynomialBuilderTest.class
 })
 public class PolynomialTestSuite {
 }

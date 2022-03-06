@@ -117,5 +117,37 @@ public class PolynomialDivisionTest {
         }
     }
 
+    @Test//firstOp has lower grade
+    public void test8() {
+        Polynomial firstOp;
+        Polynomial secondOp;
+        try {
+            firstOp = new Polynomial("X^2+3");
+            secondOp = new Polynomial("X^7-3X");
+            String result = pCalcModel.dividePolynomial(firstOp, secondOp).get(0).printPolynomial();
+            String rem = pCalcModel.dividePolynomial(firstOp, secondOp).get(1).printPolynomial();
+            if (!rem.equals("0"))
+                result+=" Rem: "+rem;
+            assertEquals("0 Rem: X^2+3", result);
+        } catch (IncorrectInputException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test//complex example
+    public void test9() {
+        Polynomial firstOp;
+        Polynomial secondOp;
+        try {
+            firstOp = new Polynomial("X^4-3X^3+7X-1");
+            secondOp = new Polynomial("2X^2-5");
+            String result = pCalcModel.dividePolynomial(firstOp, secondOp).get(0).printPolynomial();
+            String rem = pCalcModel.dividePolynomial(firstOp, secondOp).get(1).printPolynomial();
+            if (!rem.equals("0"))
+                result+=" Rem: "+rem;
+            assertEquals("0,50X^2-1,50X+1,25 Rem: -0,50X+5,25", result);
+        } catch (IncorrectInputException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
