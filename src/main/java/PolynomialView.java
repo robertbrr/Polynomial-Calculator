@@ -37,7 +37,7 @@ public class PolynomialView extends JFrame {
         firstOpChecker= new LiveInputVerifier(firstOpField);
         secondOpChecker = new LiveInputVerifier(secondOpField);
 
-        digitB.add(new JButton("0"));
+
         digitB.add(new JButton("1"));
         digitB.add(new JButton("2"));
         digitB.add(new JButton("3"));
@@ -47,6 +47,7 @@ public class PolynomialView extends JFrame {
         digitB.add(new JButton("7"));
         digitB.add(new JButton("8"));
         digitB.add(new JButton("9"));
+        digitB.add(new JButton("0"));
 
         //make keyboard buttons not focusable (in order to keep focus on text fields)
         for (JButton e: this.digitB)
@@ -70,7 +71,7 @@ public class PolynomialView extends JFrame {
 
         firstOpField.setPreferredSize(new Dimension(100,30));
         secondOpField.setPreferredSize(new Dimension(100,30));
-        resultField.setPreferredSize(new Dimension(100,100));
+        resultField.setPreferredSize(new Dimension(100,30));
 
         //the main panel
         JPanel contentPanel = new JPanel();

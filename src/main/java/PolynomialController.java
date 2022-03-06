@@ -73,7 +73,7 @@ public class PolynomialController {
                 pCalcView.getFocusedTextFieldChecker().clear();
             }catch (NullPointerException excp)
             {
-                JOptionPane.showMessageDialog(bttn,"Please select a field!");
+                JOptionPane.showMessageDialog(bttn,"Please select a text field!");
             }
         }
     }

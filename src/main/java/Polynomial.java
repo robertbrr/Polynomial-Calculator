@@ -10,24 +10,22 @@ public class Polynomial {
         this.components = new ArrayList<>();
     }
 
-    //TO DO
-    //check regex
     public Polynomial(String toExtract) throws IncorrectInputException {
         if (toExtract.length() == 0) throw new IncorrectInputException("One of the operands is null!");
-        Pattern polyFinder = Pattern.compile("([+-]?\\d?[^-+]+)");
-        Matcher polyMatcher = polyFinder.matcher(toExtract);
-        while (polyMatcher.find()) {
+        Pattern polyExpressionExtractor = Pattern.compile("[+-]?\\d?X?[^-+]+");
+        Matcher polyMonomialExceptionMatcher = polyExpressionExtractor.matcher(toExtract);
+        while (polyMonomialExceptionMatcher.find()) {
             char lastElement = toExtract.charAt(toExtract.length()-1);
             if (lastElement == '^')
                 throw new IncorrectInputException("Expecting exponent!");
             else if (lastElement == '+' || lastElement == '-')
                 throw new IncorrectInputException("Expecting operand!");
             else
-                this.components.add(new Monomial(polyMatcher.group(1)));
+                this.components.add(new Monomial(polyMonomialExceptionMatcher.group()));
         }
         this.cleanUp();
         Collections.sort(this.getComponents());
-        this.removeDuplicateMonomials();
+        this.mergeDuplicateExponents();
     }
 
     public ArrayList<Monomial> getComponents() {
@@ -40,7 +38,7 @@ public class Polynomial {
         }
         return -1;
     }
-    public void removeDuplicateMonomials() {
+    public void mergeDuplicateExponents() {
         Monomial previous = new Monomial(-1, 0);
         ArrayList<Monomial> toBeRemoved = new ArrayList<>();
         for (Monomial z : this.getComponents()) {
@@ -62,10 +60,12 @@ public class Polynomial {
         return r;
     }
     public void cleanUp(){
+        ArrayList<Monomial> toBeRemoved = new ArrayList<>();
         for (Monomial e: components) {
             if(e.getCoeff() == 0)
-                components.remove(e);
+                toBeRemoved.add(e);
         }
+        components.removeAll(toBeRemoved);
     }
     public String printPolynomial() {
         String toPrint = new String();

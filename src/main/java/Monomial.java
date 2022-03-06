@@ -67,13 +67,19 @@ public class Monomial implements Comparable {
         String coeffString = "";
         if (coeff != 0) {
             if(coeff>0) coeffString="+";
+            if(coeff != 1)
             coeffString+=String.format("%.2f",coeff);
-            if (deg == 0) r += coeffString;
+            if (coeff == -1) coeffString = "-";
+            if (deg == 0) {
+                if (coeff == -1) r+="-1";
+                else if (coeff == 1) r+="+1";
+                else r += coeffString;
+            }
             else if (deg == 1) r = r + coeffString + "X";
+            else if (deg == -1) r="+C";
             else r = r + coeffString + "X^" + this.deg;
         }
         r=r.replaceAll(",00","");
-        r=r.replaceAll("1X","X");
         return r;
     }
 }

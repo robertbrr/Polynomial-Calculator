@@ -3,26 +3,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class PolynomialModel {
-    //private Polynomial firstOperand;
-    //private Polynomial secondOperand;
+
     private Polynomial result=new Polynomial();
     private Polynomial rem = new Polynomial();
 
-   // public void setFirstOperand(Polynomial firstOperand) {
-   //     this.firstOperand = firstOperand;
-   // }
-   // public void setSecondOperand(Polynomial secondOperand) {
-       // this.secondOperand = secondOperand;
-   // }
-    public Polynomial addOrSubtractPolynomials(char typeOfOp,Polynomial firstOperand, Polynomial secondOperand) {
+
+    public Polynomial addPolynomial(Polynomial firstOperand, Polynomial secondOperand) {
         Polynomial finalResult = new Polynomial();
         finalResult.getComponents().addAll(firstOperand.getComponents());
-        Polynomial toAdd;
-        if(typeOfOp == '+')
-            toAdd = secondOperand;
-        else
-            toAdd = secondOperand.negate();
-        finalResult.getComponents().addAll(toAdd.getComponents());
+        finalResult.getComponents().addAll(secondOperand.getComponents());
         Collections.sort(finalResult.getComponents());
         Monomial previous=new Monomial(-1,0);
         ArrayList<Monomial> toBeRemoved = new ArrayList<>();
@@ -36,14 +25,12 @@ public class PolynomialModel {
             else
                 previous=z;
         }
-        for (Monomial z:toBeRemoved) {
-            finalResult.getComponents().remove(z);
-        }
+        finalResult.getComponents().removeAll(toBeRemoved);
         finalResult.cleanUp();
         return finalResult;
     }
-    public Polynomial addPolynomial(Polynomial firstOperand, Polynomial secondOperand){return addOrSubtractPolynomials('+',firstOperand,secondOperand);}
-    public Polynomial subtractPolynomial(Polynomial firstOperand, Polynomial secondOperand){return addOrSubtractPolynomials('-',firstOperand,secondOperand);}
+
+    public Polynomial subtractPolynomial(Polynomial firstOperand, Polynomial secondOperand){return addPolynomial(firstOperand,secondOperand.negate());}
     public Polynomial integratePolynomial(Polynomial firstOperand){
         Polynomial finalResult = new Polynomial();
        finalResult.getComponents().addAll(firstOperand.getComponents());
@@ -59,6 +46,7 @@ public class PolynomialModel {
             }
         }
         finalResult.cleanUp();
+        finalResult.getComponents().add(new Monomial(-1,1));
         return finalResult;
     }
     public Polynomial derivePolynomial(Polynomial firstOperand){
@@ -86,13 +74,11 @@ public class PolynomialModel {
             }
         }
         Collections.sort(finalResult.getComponents());
-        finalResult.removeDuplicateMonomials();
-        finalResult.cleanUp();
+        finalResult.mergeDuplicateExponents();
         return finalResult;
     }
     public ArrayList<Polynomial> dividePolynomial(Polynomial firstOperand, Polynomial secondOperand) throws IncorrectInputException{
-        Polynomial remainder=new Polynomial();
-        remainder.getComponents().addAll(firstOperand.getComponents());
+        Polynomial remainder;
         Polynomial finalResult=new Polynomial();
         if(secondOperand.printPolynomial().equals("0")) throw new IncorrectInputException("Can't divide by zero!!");
         int degDiff = firstOperand.getDeg()-secondOperand.getDeg();
@@ -132,11 +118,6 @@ public class PolynomialModel {
         return rem;
     }
 
-    /* public String getResult(){
-        if(this.remainder.getComponents().isEmpty())
-            return this.finalResult.printPolynomial();
-        return this.finalResult.printPolynomial()+ " Rem:  " + this.remainder.printPolynomial();
-    }*/
 }
 
 
